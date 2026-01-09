@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Ufaira Cantikk</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #FFF0F5; /* Lavender Blush Pink */
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+            overflow-y: auto; 
+            overflow-x: hidden; 
+            box-sizing: border-box;
+        }
+
+        /* Background Decoration - Fixed position agar diam saat scroll */
+        .background-decoration {
+            position: fixed; 
+            width: 100px;
+            height: 100px;
+            background-repeat: no-repeat;
+            background-size: contain;
+            opacity: 0.6;
+            animation: float 10s infinite ease-in-out;
+            pointer-events: none; 
+            z-index: 0;
+        }
+
+        .deco-heart {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23FFC0CB"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>');
+            top: 10%; left: 5%;
+            width: 80px; height: 80px;
+            animation-delay: 0s;
+        }
+        .deco-star {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23FFD700"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>');
+            bottom: 15%; right: 10%;
+            width: 70px; height: 70px;
+            animation-delay: 2s;
+        }
+        .deco-cupcake {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23FFB6C1"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-2-9c-.55 0-1 .45-1 1s.45 1 1 1h4c.55 0 1-.45 1-1s-.45-1-1-1h-4z"/></svg>'); 
+            top: 20%; right: 15%;
+            width: 90px; height: 90px;
+            animation-delay: 4s;
+        }
+         .deco-balloon {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ADD8E6"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-2-9c-.55 0-1 .45-1 1s.45 1 1 1h4c.55 0 1-.45 1-1s-.45-1-1-1h-4z"/></svg>'); 
+            bottom: 5%; left: 20%;
+            width: 100px; height: 100px;
+            animation-delay: 6s;
+        }
+
+        .container {
+            background-color: #FFFFFF;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            animation: fadeIn 1.5s ease-in-out;
+            position: relative; 
+            z-index: 10; 
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            color: #FF69B4;
+            font-size: 4em;
+            margin-bottom: 10px;
+            position: relative;
+            animation: bounceIn 1s ease-out;
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2.5em; }
+            .container { padding: 25px; }
+        }
+
+        h1::before, h1::after {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.6em;
+            opacity: 0;
+            animation-duration: 2s;
+            animation-iteration-count: infinite;
+            animation-fill-mode: forwards;
+        }
+        h1::before { content: '✨'; left: -30px; animation-name: sparkleLeft; }
+        h1::after { content: '🎉'; right: -30px; animation-name: sparkleRight; }
+
+        p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #555;
+            animation: fadeInText 2s ease-in-out 0.5s forwards;
+            opacity: 0;
+            margin-bottom: 15px;
+        }
+
+        .button {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 15px 30px;
+            background-color: #FF69B4;
+            color: #FFFFFF;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            animation: bounceIn 1s ease-out 1s forwards;
+            opacity: 0;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3);
+        }
+
+        .button:hover {
+            background-color: #C71585;
+            transform: scale(1.05);
+        }
+
+        /* Animations */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInText { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes bounceIn { 0% { transform: scale(0.5); opacity: 0; } 70% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+        @keyframes float { 0% { transform: translate(0, 0) rotate(0deg); } 25% { transform: translate(20px, 20px) rotate(5deg); } 50% { transform: translate(0, 40px) rotate(0deg); } 75% { transform: translate(-20px, 20px) rotate(-5deg); } 100% { transform: translate(0, 0) rotate(0deg); } }
+        @keyframes sparkleLeft { 0% { left: -30px; opacity: 0; } 50% { left: -50px; opacity: 1; } 100% { left: -30px; opacity: 0; } }
+        @keyframes sparkleRight { 0% { right: -30px; opacity: 0; } 50% { right: -50px; opacity: 1; } 100% { right: -30px; opacity: 0; } }
+    </style>
+</head>
+<body>
+
+    <div class="background-decoration deco-heart" style="top: 10%; left: 5%;"></div>
+    <div class="background-decoration deco-star" style="bottom: 15%; right: 10%;"></div>
+    <div class="background-decoration deco-cupcake" style="top: 20%; right: 15%;"></div>
+    <div class="background-decoration deco-balloon" style="bottom: 5%; left: 20%;"></div>
+
+    <div class="container">
+        <h1>Happy Birthday sayangkuu</h1>
+        <p>For the most beautiful and adoreable girl in this world, Ufaira❤️💕💘</p>
+        <p>
+            Happy birthday ufaa sayangkuu, ga kerasa yaa sekarang kamu udah 20 tahun, kamu udah nginjak kepala 2 hehe, ini momen yang spesial bangett sayang, semogaa di ulang tahun kamu yang ke 20 ini kamu bisa menjadi orang yang lebih baikk, bisa membahagiakan kedua orangtua kamuu, semoga kamu selalu diberi kesehatan sama kemudahann yaa ufa sayaang, semoga kamu menjadi orang yang sukses di dunia dan di akhirat aamiin, selalu semangat menghadapi apapun yang ada di depanmu yaa cantikk, kesulitan apapun itu pasti bisa kamu lewatiin, kalau kamu lagi kesulitan aku selalu ada buat jadi tempat kamu ceritaa, kamu bisa juga minta bantuan akuu, always be kind to others babe, i hope your 20th will be a memorable birthday for youu❤️❤️❤️ 
+        </p>
+        <p>I have a little things for you💖</p>
+        
+        <a href="galeri.html" class="button">Pencet inii sayaang</a>
+    </div>
+
+    <audio id="background-music" loop>
+        <source src="ulangtahun.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var audio = document.getElementById('background-music');
+            audio.volume = 0.5; 
+
+            // Coba autoplay
+            var playPromise = audio.play();
+
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.log("Autoplay dicegah browser, menampilkan tombol manual.");
+                    var playButton = document.createElement('button');
+                    playButton.textContent = 'Putar Musik 🎵';
+                    playButton.style.cssText = `
+                        position: fixed;
+                        bottom: 20px;
+                        right: 20px;
+                        padding: 12px 20px;
+                        background-color: #FF69B4;
+                        color: white;
+                        border: none;
+                        border-radius: 50px;
+                        cursor: pointer;
+                        z-index: 1000;
+                        font-family: 'Poppins', sans-serif;
+                        font-weight: 600;
+                        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+                        transition: transform 0.2s;
+                    `;
+                    playButton.onclick = function() {
+                        audio.play();
+                        playButton.style.transform = "scale(0.9)";
+                        setTimeout(() => playButton.remove(), 200);
+                    };
+                    document.body.appendChild(playButton);
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>

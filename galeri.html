@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>The Little Things</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #FFF0F5;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden; /* Kunci scroll halaman total */
+            position: relative;
+            overscroll-behavior: none; /* Mencegah refresh tarik-turun di Chrome Android */
+        }
+
+        .header-title {
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            position: relative;
+            z-index: 1000; /* Header selalu di atas */
+            pointer-events: none; /* Agar klik tembus ke bawah jika perlu, kecuali teks */
+        }
+        
+        .header-title h1 {
+            pointer-events: auto; /* Teks tetap bisa di-select */
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            color: #FF69B4;
+            font-size: 2.5em; /* Ukuran font disesuaikan mobile */
+            margin: 0;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+        }
+
+        @media (min-width: 600px) {
+            h1 { font-size: 3.5em; }
+        }
+
+        .gallery-area {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .gallery-item {
+            position: absolute;
+            width: 130px; /* Default Mobile */
+            height: 130px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            transition: box-shadow 0.2s ease, transform 0.2s ease;
+            cursor: grab;
+            border: 3px solid #FFC0CB;
+            transform: rotate(var(--random-rotation, 0deg));
+            touch-action: none; /* PENTING: Mencegah browser scroll saat elemen disentuh */
+            background: #fff;
+        }
+
+        @media (min-width: 600px) {
+            .gallery-item { width: 200px; height: 200px; }
+        }
+        
+        .gallery-item:active, .gallery-item.dragging {
+            cursor: grabbing;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            transform: scale(1.1) rotate(var(--random-rotation, 0deg));
+            z-index: 9999 !important;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            pointer-events: none; /* Gambar tidak bisa di-drag browser (ghost image) */
+            display: block;
+        }
+
+        .button-back {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 25px;
+            background-color: #FF69B4;
+            color: #FFFFFF;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            z-index: 2000; /* Tombol paling atas */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            font-size: 0.9em;
+            white-space: nowrap;
+        }
+
+        .button-back:hover {
+            background-color: #C71585;
+            transform: translateX(-50%) scale(1.05);
+        }
+
+        /* Decorations */
+        .decoration {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0.7;
+            animation: floatDeco 15s infinite ease-in-out;
+            z-index: 0;
+        }
+        
+        /* Menggunakan Emoji dan SVG inline untuk dekorasi ringan */
+        .deco-sparkle { font-size: 2em; top: 15%; left: 10%; animation-delay: 0s; }
+        .deco-star { font-size: 2.5em; bottom: 20%; right: 10%; animation-delay: 2s; }
+        .deco-cake { font-size: 3em; top: 70%; left: 20%; animation-delay: 4s; }
+        
+        @keyframes floatDeco {
+            0% { transform: translate(0, 0) rotate(0deg); opacity: 0.7; }
+            50% { transform: translate(20px, 20px) rotate(10deg); opacity: 0.9; }
+            100% { transform: translate(0, 0) rotate(0deg); opacity: 0.7; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-title">
+        <h1>Happy 20th Birthday ufa cantikk✨</h1>
+    </div>
+
+    <div class="gallery-area" id="galleryArea">
+        </div>
+
+    <div class="decoration deco-sparkle">✨</div>
+    <div class="decoration deco-star">🌟</div>
+    <div class="decoration deco-cake">🎂</div>
+    <div class="decoration" style="top: 10%; right: 10%; font-size: 2em;">🎈</div>
+    <div class="decoration" style="bottom: 15%; left: 80%; font-size: 2em;">🎁</div>
+
+    <a href="index.html" class="button-back">Ufa's Birthday Wishes</a>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const galleryArea = document.getElementById('galleryArea');
+            
+            // --- GANTI NAMA FILE FOTO DI SINI ---
+            const photoFiles = [
+                'foto1.jpeg', 'foto2.jpg', 'foto3.jpeg', 'foto4.jpeg', 'foto5.jpeg', 'foto6.jpeg'
+            ];
+            // ------------------------------------
+
+            let highestZIndex = 10; 
+            const isMobile = window.innerWidth < 600;
+            // Ukuran foto: HP=130px, PC=200px
+            const photoSize = isMobile ? 130 : 200; 
+
+            photoFiles.forEach((file, index) => {
+                const imgContainer = document.createElement('div');
+                imgContainer.classList.add('gallery-item');
+                imgContainer.style.width = photoSize + 'px';
+                imgContainer.style.height = photoSize + 'px';
+                
+                const img = document.createElement('img');
+                img.src = file;
+                img.alt = 'Foto Kenangan';
+                imgContainer.appendChild(img);
+
+                // Area sebar: kurangi ukuran foto dan header/footer margin
+                const maxX = window.innerWidth - photoSize - 20;
+                const maxY = window.innerHeight - photoSize - 100; // 100px buffer bawah
+                
+                // Random position
+                const randomX = Math.random() * maxX; 
+                const randomY = Math.random() * maxY + 70; // +70 buffer dari atas (header)
+                const randomRotation = (Math.random() - 0.5) * 30; 
+
+                imgContainer.style.left = `${Math.max(10, randomX)}px`;
+                imgContainer.style.top = `${Math.max(80, randomY)}px`;
+                imgContainer.style.setProperty('--random-rotation', `${randomRotation}deg`);
+                imgContainer.style.zIndex = index + 5; 
+
+                galleryArea.appendChild(imgContainer);
+                makeDraggable(imgContainer);
+            });
+
+            function makeDraggable(element) {
+                let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+
+                element.onmousedown = dragStart;
+                element.ontouchstart = dragStart;
+
+                function dragStart(e) {
+                    // Pindahkan item yang disentuh ke tumpukan paling atas
+                    element.style.zIndex = ++highestZIndex;
+                    element.classList.add('dragging');
+
+                    if (e.type === "touchstart") {
+                        pos3 = e.touches[0].clientX;
+                        pos4 = e.touches[0].clientY;
+                        document.ontouchend = closeDragElement;
+                        document.ontouchmove = elementDrag;
+                    } else {
+                        e.preventDefault();
+                        pos3 = e.clientX;
+                        pos4 = e.clientY;
+                        document.onmouseup = closeDragElement;
+                        document.onmousemove = elementDrag;
+                    }
+                }
+
+                function elementDrag(e) {
+                    e.preventDefault(); // Mencegah layar scroll saat geser foto (PENTING)
+
+                    let clientX, clientY;
+
+                    if (e.type === "touchmove") {
+                        clientX = e.touches[0].clientX;
+                        clientY = e.touches[0].clientY;
+                    } else {
+                        clientX = e.clientX;
+                        clientY = e.clientY;
+                    }
+
+                    pos1 = pos3 - clientX;
+                    pos2 = pos4 - clientY;
+                    pos3 = clientX;
+                    pos4 = clientY;
+
+                    element.style.top = (element.offsetTop - pos2) + "px";
+                    element.style.left = (element.offsetLeft - pos1) + "px";
+                }
+
+                function closeDragElement() {
+                    element.classList.remove('dragging');
+                    document.onmouseup = null;
+                    document.onmousemove = null;
+                    document.ontouchend = null;
+                    document.ontouchmove = null;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
